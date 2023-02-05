@@ -15,21 +15,26 @@
 
 	<label for="sample_a_size">Sample A size:</label>
 	<input type="text" id="sample_a_size" name="sample_a_size" class="py-input" value="100"><br>
+
 	<label for="a_target_actions">Sample A completed target actions:</label>
 	<input type="text" id="a_target_actions" name="a_target_actions" class="py-input" value="30"><br>
+
 	<label for="sample_b_size">Sample B size:</label>
 	<input type="text" id="sample_b_size" name="sample_b_size" class="py-input" value="100"><br>
-	<label for="a_target_actions">Sample B completed target actions:</label>
-	<input type="text" id="b_target_actions" name="a_target_actions" class="py-input" value="40"><br>
+
+	<label for="b_target_actions">Sample B completed target actions:</label>
+	<input type="text" id="b_target_actions" name="b_target_actions" class="py-input" value="40"><br>
+
 	<label for="level">Significance level:</label>
 	<input type="text" id="level" name="level" class="py-input" value="0.05"><br>
+
 	<input type="submit" value="Сompare sample conversions" id="btn-load" class="py-button" py-click="get_z_test()">
   </form>
 
-  <p>Sample A conversion rate: <span id="Sample A conversion rate"></span></p>
-  <p>Sample B conversion rate: <span id="Sample B conversion rate"></span></p>
+  <p>Sample A conversion rate: <span id="sample_a_conversion_rate"></span></p>
+  <p>Sample B conversion rate: <span id="sample_b_conversion_rate"></span></p>
   <p>p-value: <span id="p-value"></span></p>
-  <p>Result of A/B test: <span id="result"></span></p>
+  <p>Result of A/B test: <span id="result_test"></span></p>
 
   <py-config>
     packages = ["numpy","scipy"]
@@ -61,8 +66,6 @@
         # normal distribution (mean 0, sd 1)
         distr = st.norm(0, 1)
         
-        # alpha
-        alpha = level
         
         # calculating p-value
         p_value = (1 - distr.cdf(abs(z_value))) * 2
@@ -73,10 +76,10 @@
         else:
             result = 'There are not enough reasons to reject the null hypothesis'
 
-        Element('Sample A conversion rate').write(round(p1, 2))
-        Element('Sample B conversion rate').write(round(p2, 2))
+        Element('sample_a_conversion_rate').write(round(p1, 2))
+        Element('sample_b_conversion_rate').write(round(p2, 2))
         Element('p-value').write(p_value)
-        Element('Result of A/B test').write(result)
+        Element('result_test').write(result)
 
 </py-script>
 
