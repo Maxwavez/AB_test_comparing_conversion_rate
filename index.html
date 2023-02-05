@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>A/B test - conversion rate</title>
+
+      <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+      <script defer src="https://pyscript.net/latest/pyscript.js"></script>
+
+</head>
+<body>
+
+  <h1>A/B Test calculator. Comparing sample conversions</h1>
+  <form onsubmit="return false;">
+
+
+	<label for="sample_a_size">Sample A size:</label>
+	<input type="text" id="sample_a_size" name="sample_a_size" class="py-input" value="100"><br>
+	<label for="a_target_actions">Sample A completed target actions:</label>
+	<input type="text" id="a_target_actions" name="a_target_actions" class="py-input" value="30"><br>
+	<label for="sample_b_size">Sample B size:</label>
+	<input type="text" id="sample_b_size" name="sample_b_size" class="py-input" value="100"><br>
+	<label for="a_target_actions">Sample B completed target actions:</label>
+	<input type="text" id="b_target_actions" name="a_target_actions" class="py-input" value="40"><br>
+	<label for="level">Significance level:</label>
+	<input type="text" id="level" name="level" class="py-input" value="0.05"><br>
+	<input type="submit" value="Сompare sample conversions" id="btn-load" class="py-button" py-click="get_z_test()">
+  </form>
+
+  <p>Sample A conversion rate: <span id="Sample A conversion rate"></span></p>
+  <p>Sample B conversion rate: <span id="Sample B conversion rate"></span></p>
+  <p>p-value: <span id="p-value"></span></p>
+  <p>Result of A/B test: <span id="result"></span></p>
+
+  <py-config>
+    packages = ["numpy","scipy"]
+  </py-config>
+
+<py-script>
+    def get_z_test():
+
+        import numpy as np
+        import scipy.stats as st
+        
+        sample_a_size = int(Element("sample_a_size").element.value)
+        a_target_actions = int(Element("a_target_actions").element.value)
+        sample_b_size = int(Element("sample_b_size").element.value)
+        a_target_actions = int(Element("a_target_actions").element.value)
+        alpha = float(Element("level").element.value)
+        
+        # p1 and p2 - conversion rates of samples A and B
+        p1 = a_target_actions / sample_a_size
+        p2 = b_target_actions / sample_b_size
+        
+        # conversion rate of combined sample
+        p_combined = (a_target_actions + b_target_actions) / (sample_a_size + sample_b_size)
+        difference = p1 - p2
+        
+        # calculating z-value
+        z_value = (difference / (p_combined * (1 - p_combined) * (1 / sample_a_size + 1 / sample_b_size)))**1/2
+        
+        # normal distribution (mean 0, sd 1)
+        distr = st.norm(0, 1)
+        
+        # alpha
+        alpha = level
+        
+        # calculating p-value
+        p_value = (1 - distr.cdf(abs(z_value))) * 2
+        
+        # results
+        if p_value < alpha:
+            result = 'reject the null hypothesis: there are statistically significant differences between the values'
+        else:
+            result = 'There are not enough reasons to reject the null hypothesis'
+
+        Element('Sample A conversion rate').write(round(p1, 2))
+        Element('Sample B conversion rate').write(round(p2, 2))
+        Element('p-value').write(p_value)
+        Element('Result of A/B test').write(result)
+
+</py-script>
+
+</body>
+</html>
