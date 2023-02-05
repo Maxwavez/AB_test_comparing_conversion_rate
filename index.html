@@ -12,7 +12,6 @@
   <h1>A/B Test calculator. Comparing sample conversions</h1>
   <form onsubmit="return false;">
 
-
 	<label for="sample_a_size">Sample A size:</label>
 	<input type="text" id="sample_a_size" name="sample_a_size" class="py-input" value="100"><br>
 
@@ -41,15 +40,16 @@
   </py-config>
 
 <py-script>
-    def get_z_test():
 
-        import numpy as np
-        import scipy.stats as st
+    import numpy as np
+    import scipy.stats as st
+
+    def get_z_test():
         
         sample_a_size = int(Element("sample_a_size").element.value)
         a_target_actions = int(Element("a_target_actions").element.value)
         sample_b_size = int(Element("sample_b_size").element.value)
-        a_target_actions = int(Element("a_target_actions").element.value)
+        b_target_actions = int(Element("b_target_actions").element.value)
         alpha = float(Element("level").element.value)
         
         # p1 and p2 - conversion rates of samples A and B
@@ -61,23 +61,23 @@
         difference = p1 - p2
         
         # calculating z-value
-        z_value = (difference / (p_combined * (1 - p_combined) * (1 / sample_a_size + 1 / sample_b_size)))**1/2
+        z_value = difference / (p_combined * (1 - p_combined) * (1 / sample_a_size + 1 / sample_b_size))**(1/2)
         
         # normal distribution (mean 0, sd 1)
         distr = st.norm(0, 1)
         
         
         # calculating p-value
-        p_value = (1 - distr.cdf(abs(z_value))) * 2
+        p_value = st.norm.sf(abs(z_value)) * 2
         
         # results
         if p_value < alpha:
-            result = 'reject the null hypothesis: there are statistically significant differences between the values'
+            result = 'reject the null hypothesis - there are statistically significant differences between the values'
         else:
-            result = 'There are not enough reasons to reject the null hypothesis'
+            result = 'There are not enough reasons to reject the null hypothesis. The samples have no statistically significant differences'
 
-        Element('sample_a_conversion_rate').write(round(p1, 2))
-        Element('sample_b_conversion_rate').write(round(p2, 2))
+        Element('sample_a_conversion_rate').write(round(p1, 3))
+        Element('sample_b_conversion_rate').write(round(p2, 3))
         Element('p-value').write(p_value)
         Element('result_test').write(result)
 
