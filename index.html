@@ -1,15 +1,75 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>A/B test - conversion rate</title>
+  <title>A/B test online - conversion rate</title>
+
+  <style>
+      .center-screen {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      min-height: 100vh;
+    }
+
+    form label {
+      display: inline-block;
+      padding: 4px 24px;
+      width: 250px;
+      text-align: right;
+      vertical-align: middle;
+
+    }
+
+    form input[type="text"] {
+      width: 150px;
+      padding: 8px 24px;
+      margin: 8px 0;
+      box-sizing: border-box;
+      vertical-align: middle;
+    }
+    p {
+      display: inline-block;
+      padding: 5px 12px;
+      margin: 8px 0;
+      vertical-align: middle;
+      text-align: center;
+    }
+
+    span {
+      width: 200px;
+      margin: 8px 0;
+      vertical-align: middle;
+      box-sizing: border-box;
+ 
+    }
+
+      /* Style the submit button */
+      input[type="submit"] {
+
+      background-color: #228b22;
+      color: white;
+      padding: 12px 50px;
+      margin: 6px 0;
+      border: none;
+      cursor: pointer;
+    }
+
+    td {
+      Width: 350px;
+    }
+
+  </style>
 
       <link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
       <script defer src="https://pyscript.net/latest/pyscript.js"></script>
 
 </head>
 <body>
+<div class="center-screen">
 
-  <h1>A/B Test calculator. Comparing sample conversions</h1>
+  <h1>A/B test online: conversion rate (2-sample Z-test)</h1>
   <form onsubmit="return false;">
 
 	<label for="sample_a_size">Sample A size:</label>
@@ -30,10 +90,29 @@
 	<input type="submit" value="Сompare sample conversions" id="btn-load" class="py-button" py-click="get_z_test()">
   </form>
 
-  <p>Sample A conversion rate: <span id="sample_a_conversion_rate"></span></p>
-  <p>Sample B conversion rate: <span id="sample_b_conversion_rate"></span></p>
-  <p>p-value: <span id="p-value"></span></p>
-  <p>Result of A/B test: <span id="result_test"></span></p>
+<table>
+  <tr>
+    <td align=right><p>Sample A conversion rate: </p></td>
+    <td align=left><span id="sample_a_conversion_rate"></span></td>
+  </tr>
+  <tr>
+    <td align=right><p>Sample B conversion rate: </p></td>
+    <td align=left><span id="sample_b_conversion_rate"></span></td>
+  </tr>
+  <tr>
+    <td align=right><p>p-value: </p></td>
+    <td align=left><span id="p-value"></span></td>
+  </tr>
+  <tr>
+    <td align=right><p>Result of A/B test: </p></td>
+    <td align=left><span id="result_test"></span></td>
+  </tr>
+</table>
+ <br>
+ <br>
+<p style="font-size:12px">by Pavel Veykin</p>
+
+</div>
 
   <py-config>
     packages = ["numpy","scipy"]
@@ -76,8 +155,8 @@
         else:
             result = 'There are not enough reasons to reject the null hypothesis. The samples have no statistically significant differences'
 
-        Element('sample_a_conversion_rate').write(round(p1, 3))
-        Element('sample_b_conversion_rate').write(round(p2, 3))
+        Element('sample_a_conversion_rate').write(str(round(p1*100, 2))+'%')
+        Element('sample_b_conversion_rate').write(str(round(p2*100, 2))+'%')
         Element('p-value').write(p_value)
         Element('result_test').write(result)
 
