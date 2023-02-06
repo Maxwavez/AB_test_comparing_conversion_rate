@@ -58,7 +58,7 @@
     }
 
     table {
-      border-spacing: 10px 0px;
+      border-spacing: 8px 0px;
     }
 
     td {
@@ -146,10 +146,6 @@
         
         # calculating z-value
         z_value = difference / (p_combined * (1 - p_combined) * (1 / sample_a_size + 1 / sample_b_size))**(1/2)
-        
-        # normal distribution (mean 0, sd 1)
-        distr = st.norm(0, 1)
-        
         
         # calculating p-value
         p_value = st.norm.sf(abs(z_value)) * 2
