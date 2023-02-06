@@ -16,7 +16,7 @@
     form label {
       display: inline-block;
       padding: 4px 24px;
-      width: 250px;
+      width: 150px;
       text-align: right;
       vertical-align: middle;
 
@@ -31,15 +31,16 @@
     }
     p {
       display: inline-block;
-      padding: 5px 12px;
+      padding-left: 14px;
       margin: 8px 0;
       vertical-align: middle;
       text-align: center;
     }
 
     span {
+      display: inline-block;
       width: 200px;
-      margin: 8px 0;
+      padding-left: 18px;
       vertical-align: middle;
       box-sizing: border-box;
  
@@ -54,6 +55,10 @@
       margin: 6px 0;
       border: none;
       cursor: pointer;
+    }
+
+    table {
+      border-spacing: 10px 0px;
     }
 
     td {
@@ -87,25 +92,25 @@
 	<label for="level">Significance level:</label>
 	<input type="text" id="level" name="level" class="py-input" value="0.05"><br>
 
-	<input type="submit" value="Сompare sample conversions" id="btn-load" class="py-button" py-click="get_z_test()">
+	<input type="submit" value="Compare sample conversions" id="btn-load" class="py-button" py-click="get_z_test()">
   </form>
 
 <table>
   <tr>
-    <td align=right><p>Sample A conversion rate: </p></td>
-    <td align=left><span id="sample_a_conversion_rate"></span></td>
+    <td align="right"><p>Sample A conversion rate: </p></td>
+    <td align="left"><span id="sample_a_conversion_rate"></span></td>
   </tr>
   <tr>
-    <td align=right><p>Sample B conversion rate: </p></td>
-    <td align=left><span id="sample_b_conversion_rate"></span></td>
+    <td align="right"><p>Sample B conversion rate: </p></td>
+    <td align="left"><span id="sample_b_conversion_rate"></span></td>
   </tr>
   <tr>
-    <td align=right><p>p-value: </p></td>
-    <td align=left><span id="p-value"></span></td>
+    <td align="right"><p>p-value: </p></td>
+    <td align="left"><span id="p-value"></span></td>
   </tr>
   <tr>
-    <td align=right><p>Result of A/B test: </p></td>
-    <td align=left><span id="result_test"></span></td>
+    <td align="right"><p>Result of A/B test: </p></td>
+    <td align="left"><span id="result_test"></span></td>
   </tr>
 </table>
  <br>
